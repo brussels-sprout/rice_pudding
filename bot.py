@@ -139,7 +139,7 @@ async def ping(ctx):
     await ctx.send(f"Pong! ({latency}ms)")
 
 
-@bot.command(aliases=["8ball"])
+@bot.command(name="8ball")
 # func name cannot start with a number
 async def _8ball(ctx, *, arg):
     responses = [
@@ -176,7 +176,7 @@ async def _8ball(ctx, *, arg):
 translator = Translator()
 
 
-@bot.command(aliases=["translate"])
+@bot.command(name="translate")
 async def _translate(ctx, source_lang, destination_lang, text):
     try:
         if source_lang == "auto":
@@ -191,7 +191,10 @@ async def _translate(ctx, source_lang, destination_lang, text):
                 source_lang
             ).text
 
-        await ctx.send(translated)
+        await ctx.send(
+            f"**Input:** {text} *({source_lang})*\n"
+            f"**Output:** {translated} *({destination_lang})*"
+        )
     except ValueError as error:
         await ctx.send(f"**Error:** {error}.")
 
