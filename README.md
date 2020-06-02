@@ -1,2 +1,2 @@
 # rice_pudding
-My Discord bot.
+My Discord bot, the Rice Pudding.
