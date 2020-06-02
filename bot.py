@@ -46,24 +46,24 @@ choose_logger()
 
 def handle_token():
     choice = input(
-        "Has TOKEN not been set or changed? (y/n) - "
+        "Has token not been set or changed? (y/n) - "
     ).lower().strip(" ")
     if choice == "y":
         current_os = sys.platform
         if current_os == "win32":
-            token_input = input("Input Discord bot TOKEN: ").strip(" ")
+            token_input = input("Input Discord bot token: ").strip(" ")
             cwd = os.getcwd()
 
-            # creates a file called ".env" containing the TOKEN
+            # creates a file called ".env" containing the token
             os.system(
-                f"cmd /c cd {cwd} & echo TOKEN={token_input} > .env"
+                f"cmd /c cd {cwd} & echo token={token_input} > .env"
             )
 
             del token_input
         else:
             # will probably add support for linux later
             print("Unsupported operating system.")
-            exit()
+            sys.exit()
     elif choice == "n":
         pass
     else:
@@ -87,7 +87,7 @@ bot = commands.Bot(command_prefix="!h ")
 async def on_ready():
     latency = round(bot.latency, 3) * 1000  # in ms to 3 d.p.
 
-    print(f"Connected successfully as {bot.user} ({latency}).")
+    print(f"Connected successfully as {bot.user} ({latency}ms).")
 
 
 @bot.event
