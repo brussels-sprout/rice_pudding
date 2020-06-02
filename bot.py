@@ -12,6 +12,7 @@ from discord.ext import commands
 import logging
 import dotenv
 import random
+from googletrans import Translator
 
 
 def choose_logger():
@@ -105,17 +106,17 @@ async def on_message(message):
 
 
 # responds with "yes." only to the bot admin
-@bot.command()
+@bot.command(hidden=True)
 async def yes(ctx):
     if ctx.author.id == BOT_ADMIN:
         await ctx.send("yes.")
 
 
 # closes the bot (only bot admin)
-@bot.command()
+@bot.command(hidden=True)
 async def cease(ctx):
     if ctx.author.id == BOT_ADMIN:
-        await ctx.send("Done.")
+        await ctx.send("Farewell.")
         print("Done.")
 
         await bot.close()
@@ -170,6 +171,29 @@ async def _8ball(ctx, *, arg):
         f"**Question:** *{question}*\n"
         f"**Response:** {choice}"
     )
+
+
+translator = Translator()
+
+
+@bot.command(aliases=["translate"])
+async def _translate(ctx, source_lang, destination_lang, text):
+    try:
+        if source_lang == "auto":
+            translated = translator.translate(
+                text,
+                destination_lang
+            ).text
+        else:
+            translated = translator.translate(
+                text,
+                destination_lang,
+                source_lang
+            ).text
+
+        await ctx.send(translated)
+    except ValueError as error:
+        await ctx.send(f"**Error:** {error}.")
 
 
 bot.run(token)
