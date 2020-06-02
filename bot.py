@@ -81,8 +81,8 @@ token = None
 handle_token()
 
 with open("BOT_ADMIN.txt", "r") as bot_admin_file:
-    # username must be on first line of file
-    BOT_ADMIN = bot_admin_file.readline()
+    # user id must be on the first line of file
+    BOT_ADMIN = int(bot_admin_file.readline().rstrip("\n"))
 
 bot = commands.Bot(command_prefix="!h ")
 
@@ -98,7 +98,7 @@ async def on_message(message):
         if "pog" in message.content.lower():
             await message.channel.send("Poggers!")
 
-    if bot.user.lower() in message.content.lower():
+    if str(bot.user.id) in message.content:
         await message.channel.send("Huh?")
 
     await bot.process_commands(message)
@@ -107,14 +107,17 @@ async def on_message(message):
 # responds with "yes." only to the bot admin
 @bot.command()
 async def yes(ctx):
-    if ctx.author == BOT_ADMIN:
+    if ctx.author.id == BOT_ADMIN:
         await ctx.send("yes.")
 
 
 # closes the bot (only bot admin)
 @bot.command()
 async def cease(ctx):
-    if ctx.author == BOT_ADMIN:
+    if ctx.author.id == BOT_ADMIN:
+        await ctx.send("Done.")
+        print("Done.")
+
         await bot.close()
         sys.exit()
 
