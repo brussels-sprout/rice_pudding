@@ -1,6 +1,9 @@
 # rice_pudding
 # by brussels_sprout
 
+# Note: Create a BOT_ADMIN.txt file with the bot admin's Discord
+#       username on the first line (with tag)
+
 import sys
 import os
 
@@ -77,6 +80,10 @@ def handle_token():
 token = None
 handle_token()
 
+with open("BOT_ADMIN.txt", "r") as bot_admin_file:
+    # username must be on first line of file
+    BOT_ADMIN = bot_admin_file.readline()
+
 bot = commands.Bot(command_prefix="!h ")
 
 
@@ -91,7 +98,25 @@ async def on_message(message):
         if "pog" in message.content.lower():
             await message.channel.send("Poggers!")
 
+    if bot.user.lower() in message.content.lower():
+        await message.channel.send("Huh?")
+
     await bot.process_commands(message)
+
+
+# responds with "yes." only to the bot admin
+@bot.command()
+async def yes(ctx):
+    if ctx.author == BOT_ADMIN:
+        await ctx.send("yes.")
+
+
+# closes the bot (only bot admin)
+@bot.command()
+async def cease(ctx):
+    if ctx.author == BOT_ADMIN:
+        await bot.close()
+        sys.exit()
 
 
 @bot.command(aliases=["information"])
