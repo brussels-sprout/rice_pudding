@@ -70,9 +70,12 @@ def handle_token():
 
     dotenv.load_dotenv()
 
+    global token
+    token = os.environ["TOKEN"]
 
+
+token = None
 handle_token()
-token = os.environ["TOKEN"]
 
 bot = commands.Bot(command_prefix="!h ")
 
