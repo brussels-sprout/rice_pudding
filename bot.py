@@ -48,15 +48,15 @@ choose_logger()
 
 def handle_token():
     choice = input(
-        "Has token not been set or changed? (y/n) - "
+        "Has TOKEN not been set or changed? (y/n) - "
     ).lower().strip(" ")
     if choice == "y":
         current_os = sys.platform
         if current_os == "win32":
-            token_input = input("Input Discord bot token: ").strip(" ")
+            token_input = input("Input Discord bot TOKEN: ").strip(" ")
             cwd = os.getcwd()
 
-            # creates a file called ".env" containing the token
+            # creates a file called ".env" containing the TOKEN
             os.system(
                 f"cmd /c cd {cwd} & echo TOKEN={token_input} > .env"
             )
@@ -74,11 +74,11 @@ def handle_token():
 
     dotenv.load_dotenv()
 
-    global token
-    token = os.environ["TOKEN"]
+    global TOKEN
+    TOKEN = os.environ["TOKEN"]
 
 
-token = None
+TOKEN = None
 handle_token()
 
 with open("BOT_ADMIN.txt", "r") as bot_admin_file:
@@ -211,4 +211,4 @@ async def _translate(ctx, source_lang, destination_lang, text):
         await ctx.send(f"**Error:** {error}.")
 
 
-bot.run(token)
+bot.run(TOKEN)
