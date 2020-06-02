@@ -123,7 +123,10 @@ async def cease(ctx):
         sys.exit()
 
 
-@bot.command(aliases=["information"])
+@bot.command(
+    aliases=["information"],
+    description="Displays information about the bot"
+)
 async def info(ctx):
     await ctx.send(
         "**Information:**\n"
@@ -132,14 +135,20 @@ async def info(ctx):
     )
 
 
-@bot.command(aliases=["latency"])
+@bot.command(
+    aliases=["latency"],
+    description="Displays the bot's ping (in ms) to the server"
+)
 async def ping(ctx):
     latency = round(bot.latency, 3) * 1000  # in ms to 3 d.p.
 
     await ctx.send(f"Pong! ({latency}ms)")
 
 
-@bot.command(name="8ball")
+@bot.command(
+    name="8ball",
+    description="Plays the game eight-ball (8ball)"
+)
 # func name cannot start with a number
 async def _8ball(ctx, *, arg):
     responses = [
@@ -176,7 +185,10 @@ async def _8ball(ctx, *, arg):
 translator = Translator()
 
 
-@bot.command(name="translate")
+@bot.command(
+    name="translate",
+    description="Translates text"
+)
 async def _translate(ctx, source_lang, destination_lang, text):
     try:
         if source_lang == "auto":
