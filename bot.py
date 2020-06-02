@@ -90,7 +90,7 @@ async def on_ready():
 
 
 @bot.event
-async def on_guild_join(guild):
+async def on_guild_join(guild):  # guild is server
     prefix = bot.command_prefix
 
     await guild.system_channel.send(
@@ -131,7 +131,7 @@ async def cease(ctx):
 
 @bot.command(
     aliases=["information"],
-    description="Displays information about the bot"
+    description="Displays information about the bot."
 )
 async def info(ctx):
     await ctx.send(
@@ -141,9 +141,47 @@ async def info(ctx):
     )
 
 
+bot.remove_command("help")
+
+
+@bot.command(name="help", description="Displays the help message.")
+async def _help(ctx, specific_name=None):
+    if not specific_name:
+        command_list = []
+        for command in bot.commands:
+            if command.hidden is not True:
+                if command.brief is not None:
+                    command_list.append(f"{command} - {command.brief}")
+                else:
+                    command_list.append(f"{command} - {command.description}")
+
+        command_text = "\n".join(command_list)
+
+        await ctx.send(
+            "```\n"
+            f"{bot.user.name}'s command:\n\n"
+            f"{command_text}"
+            "\n```"
+        )
+    else:
+        commands_dictionary = {}
+        for command in bot.commands:
+            commands_dictionary.update({command.name: command})
+
+        if specific_name in commands_dictionary.keys():
+            await ctx.send(
+                "```\n"
+                f"{bot.user.name}'s {specific_name} commands:\n\n"
+                f"{commands_dictionary[specific_name].description}"
+                "\n```"
+            )
+        else:
+            await ctx.send("**Error:** unknown command.")
+
+
 @bot.command(
     aliases=["latency"],
-    description="Displays the bot's ping (in ms) to the server"
+    description="Displays the bot's ping (in ms) to the server."
 )
 async def ping(ctx):
     latency = round(bot.latency, 3) * 1000  # in ms to 3 d.p.
@@ -153,7 +191,7 @@ async def ping(ctx):
 
 @bot.command(
     name="8ball",
-    description="Plays the game eight-ball (8ball)"
+    description="Plays the game eight-ball (8ball)."
 )
 # func name cannot start with a number
 async def _8ball(ctx, *, arg):
@@ -193,7 +231,8 @@ translator = Translator()
 
 @bot.command(
     name="translate",
-    description="Translates text"
+    brief="Translates text.",
+    description="Translates text.\nFormat: [from] [to] [text]"
 )
 async def _translate(ctx, source_lang, destination_lang, text):
     try:
