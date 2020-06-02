@@ -1,8 +1,6 @@
 # rice_pudding
 # by brussels_sprout
 
-# Note: Create a BOT_ADMIN.txt file with the bot admin's Discord
-#       username on the first line (with tag)
 
 import sys
 import os
@@ -81,16 +79,25 @@ def handle_token():
 TOKEN = None
 handle_token()
 
-with open("BOT_ADMIN.txt", "r") as bot_admin_file:
-    # user id must be on the first line of file
-    BOT_ADMIN = int(bot_admin_file.readline().rstrip("\n"))
 
 bot = commands.Bot(command_prefix="!h ")
 
 
 @bot.event
 async def on_ready():
-    print(f"Connected successfully as {bot.user}.")
+    latency = round(bot.latency, 3) * 1000  # in ms to 3 d.p.
+
+    print(f"Connected successfully as {bot.user} ({latency}).")
+
+
+@bot.event
+async def on_guild_join(guild):
+    prefix = bot.command_prefix
+
+    await guild.system_channel.send(
+        f"**Hello *{guild.name}*!**\n"
+        f"{bot.user.name}'s prefix: \"{prefix}\" (example: *{prefix}help*)"
+    )
 
 
 @bot.event
@@ -108,15 +115,15 @@ async def on_message(message):
 # responds with "yes." only to the bot admin
 @bot.command(hidden=True)
 async def yes(ctx):
-    if ctx.author.id == BOT_ADMIN:
+    if await bot.is_owner(ctx.author):
         await ctx.send("yes.")
 
 
 # closes the bot (only bot admin)
 @bot.command(hidden=True)
 async def cease(ctx):
-    if ctx.author.id == BOT_ADMIN:
-        await ctx.send("Farewell.")
+    if await bot.is_owner(ctx.author):
+        await ctx.send("Farewell...")
         print("Done.")
 
         await bot.close()
