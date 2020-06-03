@@ -95,7 +95,7 @@ async def on_guild_join(guild):  # guild is server
 
     await guild.system_channel.send(
         f"**Hello *{guild.name}*!**\n"
-        f"{bot.user.name}'s prefix: \"{prefix}\" (example: *{prefix}help*)"
+        f"Prefix: \"{prefix}\" (example: *{prefix}help*)"
     )
 
 
