@@ -149,7 +149,7 @@ async def _help(ctx, specific_name=None):
     if not specific_name:
         command_list = []
         for command in bot.commands:
-            if command.hidden is not True:
+            if command.hidden is False:
                 if command.brief is not None:
                     command_list.append(f"{command} - {command.brief}")
                 else:
@@ -159,7 +159,7 @@ async def _help(ctx, specific_name=None):
 
         await ctx.send(
             "```\n"
-            f"{bot.user.name}'s command:\n\n"
+            "Help message:\n\n"
             f"{command_text}"
             "\n```"
         )
@@ -169,12 +169,16 @@ async def _help(ctx, specific_name=None):
             commands_dictionary.update({command.name: command})
 
         if specific_name in commands_dictionary.keys():
-            await ctx.send(
-                "```\n"
-                f"{bot.user.name}'s {specific_name} commands:\n\n"
-                f"{commands_dictionary[specific_name].description}"
-                "\n```"
-            )
+            command = commands_dictionary[specific_name]
+            if command.hidden is False:
+                await ctx.send(
+                    "```\n"
+                    f"{command.name} command help message:\n\n"
+                    f"{command.description}"
+                    "\n```"
+                )
+            else:
+                await ctx.send("**Error:** unknown command.")
         else:
             await ctx.send("**Error:** unknown command.")
 
