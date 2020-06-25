@@ -49,8 +49,8 @@ def handle_token():
         "Has token changed or NOT been set? (y/n) - "
     ).lower().strip(" ")
     if choice in ("y", "yes"):
-        current_os = sys.platform
-        if current_os in ("win32", "linux", "darwin"):
+        # sys.platform is current OS
+        if sys.platform in ("win32", "linux", "darwin"):
             token_input = input("Input Discord bot token: ").strip(" ")
             cwd = os.getcwd()
 
