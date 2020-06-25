@@ -13,63 +13,23 @@ import random
 from googletrans import Translator
 
 
-def choose_logger():
-    choice = input(
-        "Log to file (all levels) or "
-        "to console (warnings and higher)? (f/c) - "
-    ).lower().strip()
-    if choice in ("f", "full"):
-        # logs all levels to a file called "discord.log"
-        logger = logging.getLogger("discord")
-        logger.setLevel(logging.DEBUG)
-        handler = logging.FileHandler(
-            filename="discord.log",
-            encoding="utf-8",
-            mode="w"
-        )
-        handler.setFormatter(
-            logging.Formatter(
-                "%(asctime)s:%(levelname)s:%(name)s: %(message)s"
-            )
-        )
-        logger.addHandler(handler)
-    elif choice in ("c", "console"):
-        # logs warnings and higher levels to console
-        logging.basicConfig(level=logging.WARNING)
-    else:
-        print("Invalid input, try again.")
-        choose_logger()
-
-
-choose_logger()
+# logs all levels to a file called "discord.log"
+logger = logging.getLogger("discord")
+logger.setLevel(logging.DEBUG)
+handler = logging.FileHandler(
+    filename="discord.log",
+    encoding="utf-8",
+    mode="w"
+)
+handler.setFormatter(
+    logging.Formatter(
+        "%(asctime)s:%(levelname)s:%(name)s: %(message)s"
+    )
+)
+logger.addHandler(handler)
 
 
 def handle_token():
-    choice = input(
-        "Has token changed or NOT been set? (y/n) - "
-    ).lower().strip(" ")
-    if choice in ("y", "yes"):
-        # sys.platform is current OS
-        if sys.platform in ("win32", "linux", "darwin"):
-            token_input = input("Input Discord bot token: ").strip(" ")
-            cwd = os.getcwd()
-
-            # creates a file called ".env" containing the bot token
-            os.system(
-                f"cmd /c cd {cwd} & echo token={token_input} > .env"
-            )
-
-            del token_input
-        else:
-            # will probably add support for linux later
-            print("Unsupported operating system.")
-            sys.exit()
-    elif choice in ("n", "no"):
-        pass
-    else:
-        print("Invalid input, try again.")
-        handle_token()
-
     dotenv.load_dotenv()
 
     global TOKEN
