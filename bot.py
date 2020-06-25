@@ -18,7 +18,7 @@ def choose_logger():
         "Log to file (all levels) or"
         " to console (warnings and higher)? (f/c) - "
     ).lower().strip()
-    if choice == "f":
+    if choice in ("f", "full"):
         # logs all levels to a file called "discord.log"
         logger = logging.getLogger("discord")
         logger.setLevel(logging.DEBUG)
@@ -33,7 +33,7 @@ def choose_logger():
             )
         )
         logger.addHandler(handler)
-    elif choice == "c":
+    elif choice in ("c", "console"):
         # logs warnings and higher levels to console
         logging.basicConfig(level=logging.WARNING)
     else:
@@ -46,15 +46,15 @@ choose_logger()
 
 def handle_token():
     choice = input(
-        "Has token not been set or changed? (y/n) - "
+        "Has token changed or NOT been set? (y/n) - "
     ).lower().strip(" ")
-    if choice == "y":
+    if choice in ("y", "yes"):
         current_os = sys.platform
-        if current_os == "win32":
+        if current_os in ("win32", "linux", "darwin"):
             token_input = input("Input Discord bot token: ").strip(" ")
             cwd = os.getcwd()
 
-            # creates a file called ".env" containing the token
+            # creates a file called ".env" containing the bot token
             os.system(
                 f"cmd /c cd {cwd} & echo token={token_input} > .env"
             )
@@ -64,7 +64,7 @@ def handle_token():
             # will probably add support for linux later
             print("Unsupported operating system.")
             sys.exit()
-    elif choice == "n":
+    elif choice in ("n", "no"):
         pass
     else:
         print("Invalid input, try again.")
