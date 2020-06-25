@@ -37,7 +37,7 @@ def handle_token():
 
 
 TOKEN = None
-handle_token()
+# handle_token()
 
 bot = commands.Bot(command_prefix="!h ")
 
