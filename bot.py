@@ -13,20 +13,8 @@ import random
 from googletrans import Translator
 
 
-# logs all levels to a file called "discord.log"
-logger = logging.getLogger("discord")
-logger.setLevel(logging.DEBUG)
-handler = logging.FileHandler(
-    filename="discord.log",
-    encoding="utf-8",
-    mode="w"
-)
-handler.setFormatter(
-    logging.Formatter(
-        "%(asctime)s:%(levelname)s:%(name)s: %(message)s"
-    )
-)
-logger.addHandler(handler)
+# logs warnings and higher levels to console
+logging.basicConfig(level=logging.WARNING)
 
 
 def handle_token():
@@ -37,7 +25,7 @@ def handle_token():
 
 
 TOKEN = None
-# handle_token()
+handle_token()
 
 bot = commands.Bot(command_prefix="!h ")
 
