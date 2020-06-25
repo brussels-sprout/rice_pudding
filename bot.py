@@ -15,8 +15,8 @@ from googletrans import Translator
 
 def choose_logger():
     choice = input(
-        "Log to file (all levels) or"
-        " to console (warnings and higher)? (f/c) - "
+        "Log to file (all levels) or "
+        "to console (warnings and higher)? (f/c) - "
     ).lower().strip()
     if choice in ("f", "full"):
         # logs all levels to a file called "discord.log"
