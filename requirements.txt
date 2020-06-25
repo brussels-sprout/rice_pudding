@@ -1,0 +1,3 @@
+git+https://github.com/Rapptz/discord.py@rewrite
+python-dotenv==0.13.0
+googletrans==2.4.0
