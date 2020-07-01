@@ -8,7 +8,6 @@ import os
 # import discord
 from discord.ext import commands
 import logging
-import dotenv
 import random
 from googletrans import Translator
 
@@ -18,8 +17,6 @@ logging.basicConfig(level=logging.WARNING)
 
 
 def handle_token():
-    dotenv.load_dotenv()
-
     global TOKEN
     TOKEN = os.environ["TOKEN"]
 
