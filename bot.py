@@ -1,6 +1,8 @@
 # rice_pudding
 # by brussels_sprout
 
+# Note: You need to assign your Discord bot token
+# to a Config Var named "TOKEN".
 
 import sys
 import os
