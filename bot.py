@@ -58,7 +58,7 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-# responds with "yes." only to the bot admin
+# responds with "yes." only to the bot owners
 @bot.command(hidden=True)
 async def yes(ctx):
     if await bot.is_owner(ctx.author):
