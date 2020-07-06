@@ -61,7 +61,6 @@ def handle_token():
 
             del token_input
         else:
-            # will probably add support for linux later
             print("Unsupported operating system.")
             sys.exit()
     elif choice in ("n", "no"):
