@@ -65,7 +65,7 @@ async def yes(ctx):
         await ctx.send("yes.")
 
 
-# closes the bot (only bot admin)
+# closes the bot (only bot owners)
 @bot.command(hidden=True)
 async def cease(ctx):
     if await bot.is_owner(ctx.author):
