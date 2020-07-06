@@ -110,14 +110,14 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-# responds with "yes." only to the bot admin
+# responds with "yes." only to the bot owners
 @bot.command(hidden=True)
 async def yes(ctx):
     if await bot.is_owner(ctx.author):
         await ctx.send("yes.")
 
 
-# closes the bot (only bot admin)
+# closes the bot (only bot owners)
 @bot.command(hidden=True)
 async def cease(ctx):
     if await bot.is_owner(ctx.author):
