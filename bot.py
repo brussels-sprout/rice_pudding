@@ -1,16 +1,8 @@
 # rice_pudding
 # by brussels_sprout
 
-
-import sys
-import os
-
-# import discord
-from discord.ext import commands
-import logging
-import dotenv
-import random
-from googletrans import Translator
+# Note: You need to assign your Discord bot token
+# to a Config Var named "TOKEN".
 
 
 def logging_setup():
@@ -122,7 +114,6 @@ check_environment()
 
 TOKEN = None
 handle_token()
-
 bot = commands.Bot(command_prefix="!h ")
 
 
