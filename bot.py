@@ -1,37 +1,30 @@
 # rice_pudding
 # by brussels_sprout
 
-# Note: You need to assign your Discord bot token
-# to a Config Var named "TOKEN".
+# Note: If you host the bot on Heroku (https://heroku.com/), you
+# need to assign your Discord bot token to a Config Var named "TOKEN".
+
+
+import sys
+import os
+
+# import discord
+from discord.ext import commands
+import logging
+import random
+from googletrans import Translator
+# look at line 75
 
 
 def logging_setup():
-    # # logs all levels (debug and higher) to a file called "discord.log"
-    # logging.basicConfig(
-    #     level=logging.DEBUG,
-    #     format="%(asctime)s - %(levelname)s - %(name)s: %(message)s",
-    #     filename="discord.log",
-    #     filemode="w"
-    # )
-    #
-    # # logs warnings and higher levels to console
-    # console_handler = logging.StreamHandler()
-    # console_handler.setLevel(logging.WARNING)
-    # console_handler.setFormatter(
-    #     logging.Formatter(
-    #         "%(asctime)s - %(levelname)s - %(name)s: %(message)s"
-    #     )
-    # )
-    # logging.getLogger("").addHandler(console_handler)
-
     logger = logging.getLogger("discord")
+    logger.setLevel(logging.DEBUG)
 
     file_handler = logging.FileHandler(
         filename="discord.log",
         encoding="utf-8",
         mode="a"
     )
-    file_handler.setLevel(logging.DEBUG)
 
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.WARNING)
@@ -44,28 +37,6 @@ def logging_setup():
 
     logger.addHandler(file_handler)
     logger.addHandler(console_handler)
-
-    # formatter = logging.Formatter(
-    #     "%(asctime)s:%(levelname)s:%(name)s: %(message)s"
-    # )
-    #
-    # # logs all levels (debug and higher) to a file called "discord.log"
-    # file_logger = logging.getLogger("discord")
-    # file_logger.setLevel(logging.DEBUG)
-    # file_handler = logging.FileHandler(
-    #     filename="discord.log",
-    #     encoding="utf-8",
-    #     mode="w"
-    # )
-    # file_handler.setFormatter(formatter)
-    # file_logger.addHandler(file_handler)
-    #
-    # # logs warnings and higher levels to console
-    # console_logger = logging.StreamHandler()
-    # console_logger.setLevel(logging.WARNING)
-
-
-logging_setup()
 
 
 def check_environment():
@@ -102,18 +73,22 @@ def handle_token():
             print("Invalid input, try again.")
             handle_token()
 
-        dotenv.load_dotenv()
+        from dotenv import load_dotenv
+
+        load_dotenv()
 
     global TOKEN
     TOKEN = os.environ["TOKEN"]
 
 
+logging_setup()
+
 on_heroku = None
 check_environment()
 
-
 TOKEN = None
 handle_token()
+
 bot = commands.Bot(command_prefix="!h ")
 
 
