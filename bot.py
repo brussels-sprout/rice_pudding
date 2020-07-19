@@ -13,66 +13,113 @@ import random
 from googletrans import Translator
 
 
-def choose_logger():
-    choice = input(
-        "Log to file (all levels) or "
-        "to console (warnings and higher)? (f/c) - "
-    ).lower().strip()
-    if choice in ("f", "full"):
-        # logs all levels to a file called "discord.log"
-        logger = logging.getLogger("discord")
-        logger.setLevel(logging.DEBUG)
-        handler = logging.FileHandler(
-            filename="discord.log",
-            encoding="utf-8",
-            mode="w"
-        )
-        handler.setFormatter(
-            logging.Formatter(
-                "%(asctime)s:%(levelname)s:%(name)s: %(message)s"
-            )
-        )
-        logger.addHandler(handler)
-    elif choice in ("c", "console"):
-        # logs warnings and higher levels to console
-        logging.basicConfig(level=logging.WARNING)
+def logging_setup():
+    # # logs all levels (debug and higher) to a file called "discord.log"
+    # logging.basicConfig(
+    #     level=logging.DEBUG,
+    #     format="%(asctime)s - %(levelname)s - %(name)s: %(message)s",
+    #     filename="discord.log",
+    #     filemode="w"
+    # )
+    #
+    # # logs warnings and higher levels to console
+    # console_handler = logging.StreamHandler()
+    # console_handler.setLevel(logging.WARNING)
+    # console_handler.setFormatter(
+    #     logging.Formatter(
+    #         "%(asctime)s - %(levelname)s - %(name)s: %(message)s"
+    #     )
+    # )
+    # logging.getLogger("").addHandler(console_handler)
+
+    logger = logging.getLogger("discord")
+
+    file_handler = logging.FileHandler(
+        filename="discord.log",
+        encoding="utf-8",
+        mode="a"
+    )
+    file_handler.setLevel(logging.DEBUG)
+
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.WARNING)
+
+    formatter = logging.Formatter(
+        "%(asctime)s - %(levelname)s - %(name)s: %(message)s"
+    )
+    file_handler.setFormatter(formatter)
+    console_handler.setFormatter(formatter)
+
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+
+    # formatter = logging.Formatter(
+    #     "%(asctime)s:%(levelname)s:%(name)s: %(message)s"
+    # )
+    #
+    # # logs all levels (debug and higher) to a file called "discord.log"
+    # file_logger = logging.getLogger("discord")
+    # file_logger.setLevel(logging.DEBUG)
+    # file_handler = logging.FileHandler(
+    #     filename="discord.log",
+    #     encoding="utf-8",
+    #     mode="w"
+    # )
+    # file_handler.setFormatter(formatter)
+    # file_logger.addHandler(file_handler)
+    #
+    # # logs warnings and higher levels to console
+    # console_logger = logging.StreamHandler()
+    # console_logger.setLevel(logging.WARNING)
+
+
+logging_setup()
+
+
+def check_environment():
+    global on_heroku
+
+    if "DYNO" in os.environ:
+        on_heroku = True
     else:
-        print("Invalid input, try again.")
-        choose_logger()
-
-
-choose_logger()
+        on_heroku = False
 
 
 def handle_token():
-    choice = input(
-        "Has token changed or NOT been set? (y/n) - "
-    ).lower().strip(" ")
-    if choice in ("y", "yes"):
-        # sys.platform is current OS
-        if sys.platform in ("win32", "linux", "darwin"):
-            token_input = input("Input Discord bot token: ").strip(" ")
-            cwd = os.getcwd()
-
-            # creates a file called ".env" containing the bot token
-            os.system(
-                f"cmd /c cd {cwd} & echo token={token_input} > .env"
-            )
-
-            del token_input
-        else:
-            print("Unsupported operating system.")
-            sys.exit()
-    elif choice in ("n", "no"):
+    if on_heroku:
         pass
     else:
-        print("Invalid input, try again.")
-        handle_token()
+        choice = input(
+            "Has token changed or NOT been set? (y/n) - "
+        ).lower().strip(" ")
 
-    dotenv.load_dotenv()
+        if choice in ("y", "yes"):
+            # sys.platform is current OS
+            if sys.platform in ("win32", "linux", "darwin"):
+                token_input = input("Input Discord bot token: ").strip(" ")
+                cwd = os.getcwd()
 
-    global TOKEN
-    TOKEN = os.environ["TOKEN"]
+                # creates a file called ".env" containing the bot token
+                os.system(f"cmd /c cd {cwd} & echo token={token_input} > .env")
+
+                del token_input
+            else:
+                print("Unsupported operating system.")
+                sys.exit()
+        elif choice in ("n", "no"):
+            pass
+        else:
+            print("Invalid input, try again.")
+            handle_token()
+
+        dotenv.load_dotenv()
+
+        global TOKEN
+        TOKEN = os.environ["TOKEN"]
+
+
+on_heroku = None
+check_environment()
 
 
 TOKEN = None
