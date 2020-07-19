@@ -86,9 +86,7 @@ def check_environment():
 
 
 def handle_token():
-    if on_heroku:
-        pass
-    else:
+    if not on_heroku:
         choice = input(
             "Has token changed or NOT been set? (y/n) - "
         ).lower().strip(" ")
@@ -100,7 +98,7 @@ def handle_token():
                 cwd = os.getcwd()
 
                 # creates a file called ".env" containing the bot token
-                os.system(f"cmd /c cd {cwd} & echo token={token_input} > .env")
+                os.system(f"cmd /c cd {cwd} & echo TOKEN={token_input} > .env")
 
                 del token_input
             else:
@@ -114,8 +112,8 @@ def handle_token():
 
         dotenv.load_dotenv()
 
-        global TOKEN
-        TOKEN = os.environ["TOKEN"]
+    global TOKEN
+    TOKEN = os.environ["TOKEN"]
 
 
 on_heroku = None
