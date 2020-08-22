@@ -138,7 +138,10 @@ translator = Translator()
     brief="Translates text.",
     description="Translates text.\nFormat: [from] [to] [text]"
 )
-async def _translate(ctx, source_lang, destination_lang, text):
+async def _translate(ctx, *, args):
+    args_list = args.split(" ", 2)
+    source_lang, destination_lang, text = args_list
+
     try:
         if source_lang == "auto":
             translated = translator.translate(
